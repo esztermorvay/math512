@@ -10,6 +10,7 @@ import matplotlib.pyplot as plt
 
 values = []
 roots = []
+errors = []
 def bisect(f, a, b, atol):
     """
     :param f: function
@@ -30,6 +31,7 @@ def bisect(f, a, b, atol):
     c = (a + b) / 2
     values.append(abs(b-a))
     roots.append(c)
+    errors.append(get_absolute_error(c))
     if abs(b-a) < atol:
         return c, 0
     else:
@@ -46,10 +48,13 @@ def bisect(f, a, b, atol):
 def f(x):
     return math.sqrt(x) - 1.1
 
+def get_absolute_error(root):
+    return abs(1.21 - root)
 def run_routine():
     root, iterations = bisect(f, 0, 2, 1e-8)
     print("Root estimate: ", root)
     print("Iterations it took: ", iterations)
+    print("Absolute error: ", get_absolute_error(root))
 
 def plot_values():
     plt.plot(values)
@@ -67,10 +72,19 @@ def plot_roots():
     plt.savefig("q5.2.png")
     plt.show()
 
+def plot_errors():
+    plt.plot(errors)
+    plt.title("Absolute Error vs. Iteration")
+    plt.xlabel("Iteration")
+    plt.ylabel("Absolute Error")
+    plt.savefig("q5.3.png")
+    plt.show()
+
 def main():
     run_routine()
     plot_values()
     plot_roots()
+    plot_errors()
 
 if __name__ == "__main__":
     main()
