@@ -1,5 +1,5 @@
 from matplotlib import pyplot as plt
-from scipy import stats
+# from scipy import stats
 import random
 def rng(x_n, m, a, c):
     """
@@ -116,6 +116,10 @@ def main():
         y.append(x_n/m)
         nums.append(x_n)
         nums_normalized.append(x_n / m)
+    # print avg of nums normalized
+    print(sum(nums_normalized)/len(nums_normalized))
+    # print variance
+    print(sum([(num - sum(nums_normalized)/len(nums_normalized))**2 for num in nums_normalized])/len(nums_normalized))
 
     # plt.scatter(x, y)
     # plt.title('Scatter Plot of Random Number Pairs Between 0 and 1')
