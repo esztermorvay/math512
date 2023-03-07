@@ -32,7 +32,7 @@ def question1():
     fig = plt.figure()
     ax = fig.add_subplot(111)
 
-    # a 10,000 size numpy array to hold all the samples:
+    # a 1,,000,000 size numpy array to hold all the samples
     samples = np.zeros(1000000)
     samples_positives = np.zeros(500000)
     samples_negatives = np.zeros(500000)
@@ -51,7 +51,7 @@ def question1():
         current, all = generate_brownian_motion(3, 0, 1, -1)
         samples_negatives[i] = current**2 + np.cos(all[-1])
 
-    # get the mean of samples negative and samples positive
+    # get the mean of samples negative and samples positive as an estimator
     mean_pos = np.mean(samples_positives)
     mean_neg = np.mean(samples_negatives)
     mean = 0.5*(mean_pos + mean_neg)
