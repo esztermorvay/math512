@@ -68,9 +68,13 @@ def q1_a():
     b_variances = []
     c_means = []
     c_variances = []
+    t_s = []
+    for t_ in range(0,2100,100):
+        t_s.append(t_/1000)
     # for L in range(10,1000,20):
-    for L in range(10000,10001):
-    # for t in range(0,3):
+    # for L in range(10000,10001):
+    for t in t_s:
+        print("t: ", t)
         Ls.append(L)
         dWs = []
         samples = np.zeros(sample_size)
@@ -82,50 +86,50 @@ def q1_a():
         # calculating the runtime for each L
         dt = t / L
         # generate ts list
-        s = 0
-        ts = [0]
-        while s <= t:
-            ts.append(s)
-            s += dt
+        # s = 0
+        # ts = [0]
+        # while s <= t:
+        #     ts.append(s)
+        #     s += dt
 
         start_time = time.time()
         for i in range(sample_size):
-            print("L: ", L, " percent done: ", i*100/sample_size, "%")
+            # print("L: ", L, " percent done: ", i*100/sample_size, "%")
             # generate a brownian motion process
 
             current, all = generate_brownian_motion_loop(t, drift, variance, dt=t/L)
-            # total_a = 0
-            # for j in range(0, len(all)-1):
-            #     # total_a += abs(all[j+1] - all[j])
-            #     # total_a += (all[j + 1] - all[j])**2
-            #     total_a += (all[j + 1] - all[j]) * all[j]
-            #     # total_a += ((all[j] + all[j+1])/2)*(all[j + 1] - all[j])
-            #     # total_a += all[j]*all[j]*dt
-            # samples_a[i] = total_a
-            # total_b = 0
-            # for j in range(0, len(all)-1):
-            #     # total_a += abs(all[j+1] - all[j])
-            #     # total_a += (all[j + 1] - all[j])**2
-            #     # total_a += (all[j + 1] - all[j]) * all[j]
-            #     total_b += ((all[j] + all[j+1])/2)*(all[j + 1] - all[j])
-            #     # total_a += all[j]*dt
-            # samples_b[i] = total_b
-            # samples[i] = total_a
-            # samples[i] = total_a*total_a
-            # total_c = 0
-            # for j in range(0, len(all)-1):
-            #     # total_a += abs(all[j+1] - all[j])
-            #     # total_a += (all[j + 1] - all[j])**2
-            #     # total_a += (all[j + 1] - all[j]) * all[j]
-            #     # total_b += ((all[j] + all[j+1])/2)*(all[j + 1] - all[j])
-            #     # total_a += all[j]*dt
-            #     total_c += dt
-            # samples_c[i] = 0.5*total_c
+            total_a = 0
+            for j in range(0, len(all)-1):
+                # total_a += abs(all[j+1] - all[j])
+                # total_a += (all[j + 1] - all[j])**2
+                total_a += (all[j + 1] - all[j]) * all[j]
+                # total_a += ((all[j] + all[j+1])/2)*(all[j + 1] - all[j])
+                # total_a += all[j]*all[j]*dt
+            samples_a[i] = total_a
+            total_b = 0
+            for j in range(0, len(all)-1):
+                # total_a += abs(all[j+1] - all[j])
+                # total_a += (all[j + 1] - all[j])**2
+                # total_a += (all[j + 1] - all[j]) * all[j]
+                total_b += ((all[j] + all[j+1])/2 + np.random.normal(0, 1))*(all[j + 1] - all[j])
+                # total_a += all[j]*dt
+            samples_b[i] = total_b
+            samples[i] = total_a
+            samples[i] = total_a*total_a
+            total_c = 0
+            for j in range(0, len(all)-1):
+                # total_a += abs(all[j+1] - all[j])
+                # total_a += (all[j + 1] - all[j])**2
+                # total_a += (all[j + 1] - all[j]) * all[j]
+                # total_b += ((all[j] + all[j+1])/2)*(all[j + 1] - all[j])
+                # total_a += all[j]*dt
+                total_c += dt
+            samples_c[i] = total_c
 
             # using the trapezoidal method
             samples[i] = np.trapz(all,dx=dt)
-            if i < 50:
-                plt.plot(ts, all)
+            # if i < 50:
+            #     plt.plot(ts, all)
             if i < sample_size//2:
                 samples_positives[i] = samples[i]
             # else:
@@ -209,9 +213,9 @@ def q1_a():
     # plt.show()
 
     fig, (ax1, ax2) = plt.subplots(1, 2)
-    ax1.plot(a_means, label='mean of A')
-    ax1.plot(b_means, label='mean of B')
-    ax1.plot(c_means, label='mean of C')
+    ax1.plot(t_s, a_means, label='mean of A')
+    ax1.plot(t_s, b_means, label='mean of B')
+    ax1.plot(t_s, c_means, label='mean of C')
     ax1.set_title('Mean')
     ax1.set_xlabel('t')
     ax1.set_ylabel('Mean')
